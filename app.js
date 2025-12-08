@@ -23,7 +23,9 @@ const Servicesview = {
                 'Brake Service',
                 'Full Service'
             ],
-            alltimes: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"]
+            alltimes: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"],
+            book: false,
+            showtimes: false
         };
     },
 
@@ -93,13 +95,29 @@ const Servicesview = {
             this.servicetype = '';
         },
 
+        showallbookings() {
+            this.book = true;
+        },
+
+        toggleShowAllBookings() {
+            this.book = false;
+        },
+
+        toggletimes() {
+            this.showtimes = true;
+        },
+
+        untoggletimes() {
+            this.showtimes = false;
+        },
+
         sortByDate() {
             this.$root.bookings.sort(function (a, b) {
-                
+
                 if (a.date < b.date) return -1;
                 if (a.date > b.date) return 1;
 
-        
+
                 if (a.time < b.time) return -1;
                 if (a.time > b.time) return 1;
 
@@ -127,10 +145,10 @@ const Servicesview = {
             <label>Date:</label>
             <input v-model="date" type="date">
 
-            <label>Time:</label>
-            <select v-model="time">
+            <label v-if="date">Time:</label>
+            <select v-if="date" v-model="time">
             <!-- https://www.w3schools.com/tags/tag_option.asp -->
-                <option v-for="time in alltimes" :key="time" :value="time">{{ time }}</option>
+                <option v-for="time in freetimes" :key="time" :value="time">{{ time }}</option>
             </select>
 
             <label>Service Type:</label>
@@ -139,14 +157,11 @@ const Servicesview = {
             </select>
             <button type="submit">Book Service</button>
         </form>
-        <div v-if="date">
-            <h3>Available times for {{ date }}</h3>
-            <p v-if="freetimes.length === 0">No available times for this date.</p>
-            <ul v-else>
-                <li v-for="time in freetimes" :key="time">{{ time }}</li>
-            </ul>
-        </div>
         <div>
+        <button @click="showallbookings">Show All Bookings</button>
+        <button @click="toggletimes">Show Available Times</button>
+        </div>
+        <div v-if="book">
         <h2>All Bookings</h2>
         <button @click="sortByDate">Sort by Date</button>
         <ul>
@@ -155,8 +170,18 @@ const Servicesview = {
                 <router-link :to="'/bookings/' + booking.id">More Info</router-link>
             </li>
         </ul>
+        <button @click="toggleShowAllBookings">Hide All Bookings</button>
+        </div>
+        <div v-if="showtimes">
+        <h2 v-if="!date">Select Date</h2>
+        <h2 v-if="date">Available Times on {{ date }}</h2>
+        <ul v-if="date">
+            <li v-for="time in freetimes" :key="time">{{ time }}</li>
+        </ul>
+        <button @click="untoggletimes">Hide Available Times</button>
         </div>
     </div>
+    
     `
 };
 
@@ -165,8 +190,14 @@ const Bookingsview = {
         return {
             alltimes: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"],
             isediting: false,
-    };
-},
+            servicetypes: [
+                'Oil Change',
+                'Tire Change',
+                'Brake Service',
+                'Full Service'
+            ],
+        };
+    },
     computed: {
         bookings() {
             const id = Number(this.$route.params.id);
@@ -177,12 +208,12 @@ const Bookingsview = {
     methods: {
         alterbooking() {
             this.isediting = true;
-    },
+        },
         alteredbooking() {
             this.isediting = false;
             alert(`Your booking has been altered.`);
         }
-},
+    },
     template: `
     <div>
     <h2>Booking info</h2>
@@ -196,6 +227,7 @@ const Bookingsview = {
             <p>Time: {{ bookings.time }}</p>
             <p>Service Type: {{ bookings.servicetype }}</p>
             <p>Status: {{ bookings.status }}</p>
+            <p v-if="bookings.comment">Comment: {{ bookings.comment }}</p>
             <button @click="alterbooking">Alter Booking</button>
         </div>
         <div v-if="isediting">
@@ -217,6 +249,23 @@ const Bookingsview = {
             <select v-model="bookings.time">
                 <option v-for="time in alltimes" :key="time" :value="time">{{ time }}</option>
             </select>
+
+            <label>Service:</label>
+            <select v-model="bookings.servicetype">
+                <option v-for="type in servicetypes" :key="type" :value="type">{{ type }}</option>
+            </select>
+            
+            <input type="radio" v-model="bookings.status" value="Done">
+            <label for="done">Done</label>
+
+            <input type="radio" v-model="bookings.status" value="Upcoming">
+            <label for="upcoming">Upcoming</label>
+
+            <input type="radio" v-model="bookings.status" value="Ongoing">
+            <label for="ongoing">Ongoing</label>
+
+            <label>Comment</label>
+            <input v-model="bookings.comment" type="comment">
             <button type="submit" class="btn">Save Changes</button>
         </form>
         </div>
@@ -225,18 +274,122 @@ const Bookingsview = {
     `
 };
 
-const Aboutview = {}
+const Aboutview = {
+    // https://www.youtube.com/watch?v=kjw44XKL7xI
+    template: `
+    <h2 class="ct">Our Services</h2>
+    <details>
+        <summary>
+        <h1>Item 1</h1>
+        </summary>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+    </details>
+
+    <details>
+        <summary>
+        <h1>Item 1</h1>
+        </summary>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+    </details>
+
+    <details>
+        <summary>
+        <h1>Item 1</h1>
+        </summary>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+    </details>
+
+    <details>
+        <summary>
+        <h1>Item 1</h1>
+        </summary>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+        <p>Description</p>
+    </details>
+
+    `
+};
 
 const Bookingview = {
-    template: `
-    <h2>Bookings</h2>
+    data() {
+        return {
+            searchtext: '',
+            searching: false
+        };
+    },
+    methods: {
+        searchbooking() {
+            this.searching = true;
+        },
 
+        stopsearchbooking() {
+            this.searching = false;
+            this.searchtext = '';
+        }
+    },
+
+    computed: {
+        filteredbookings() {
+            if (!this.searchtext) {
+                return [];
+            }
+            let text = this.searchtext.toLowerCase();
+            let results = [];
+
+            this.$root.bookings.forEach(booking => {
+                let name = booking.name.toLowerCase();
+                let regnr = booking.regnr.toLowerCase();
+                let email = booking.email.toLowerCase();
+                let status = booking.status.toLowerCase();
+
+                if (name.includes(text) || regnr.includes(text) || status.includes(text) || email.includes(text)) {
+                    results.push(booking);
+                }
+            });
+
+            return results;
+        }
+    },
+    template: `
+    <div>
+    <h2>Bookings</h2>
+    <form @submit.prevent="searchbooking">
+    <label>Search Booking:</label>
+    <input type="text" v-model="searchtext" placeholder="Enter Regnr, Name or Email">
+    <button type="submit">Search</button>
+    <button type="button" @click="stopsearchbooking">Clear</button>
+    <ul v-if="searching == true">
+    
+        <li v-for="booking in filteredbookings" :key="booking.id">
+            {{ booking.name }} - {{ booking.regnr }} - {{ booking.date }} at {{ booking.time }} - {{ booking.status }}
+            <router-link :to="'/bookings/' + booking.id">More Info</router-link>
+            
+        </li>
+        
+    </ul>
+    </form>
+    </div>
 `
 }
 const routes = [
     { path: '/', component: Homeview },
     { path: '/services', component: Servicesview },
-    {path: '/bookings', component: Bookingview },
+    { path: '/bookings', component: Bookingview },
     { path: '/bookings/:id', component: Bookingsview },
     { path: '/about', component: Aboutview },
 ];
