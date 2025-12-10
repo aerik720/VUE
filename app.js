@@ -1,7 +1,28 @@
 const Homeview = {
     template: `
     <div>
-        <h1>Welcome</h1>
+        
+        <div class="homeContainer">
+        <img class="img" src="https://images.pexels.com/photos/12185933/pexels-photo-12185933.jpeg" alt="Car Service">
+        <p class="welcometext">Welcome to Limton's Auto! </p>
+        <p class="welcometext2">Whether you need an oil change, tire rotation, or a full service, we've got you covered. Use the Buttons below or the links above to get started!</p>
+        </div>
+
+        <div class="btnCard">
+        
+        <router-link to="/services">
+            <button class="btnHome">Book a Service</button>
+        </router-link>
+        
+        
+        
+        
+        <router-link to="/bookings">
+
+            <button class="btnHome">View Bookings</button>
+        </router-link>
+        </div>
+        
     </div>
     `
 }
@@ -9,6 +30,7 @@ const Homeview = {
 const Servicesview = {
     data() {
         return {
+            // ID fick vi hjälp av chatgpt hur vi skulle göra
             id: Date.now(),
             name: '',
             email: '',
@@ -23,9 +45,16 @@ const Servicesview = {
                 'Brake Service',
                 'Full Service'
             ],
+            extraservice: '',
+            extraservices: [
+                'Car Wash',
+                'Interior Cleaning',
+                'New Tires',
+            ],
             alltimes: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"],
             book: false,
-            showtimes: false
+            showtimes: false,
+            
         };
     },
 
@@ -80,6 +109,7 @@ const Servicesview = {
                 date: this.date,
                 time: this.time,
                 servicetype: this.servicetype,
+                extraservice: this.extraservice,
                 status: "Upcoming"
             };
 
@@ -93,6 +123,7 @@ const Servicesview = {
             this.date = '';
             this.time = '';
             this.servicetype = '';
+            this.extraservice = '';
         },
 
         showallbookings() {
@@ -112,17 +143,22 @@ const Servicesview = {
         },
 
         sortByDate() {
-            this.$root.bookings.sort(function (a, b) {
-
-                if (a.date < b.date) return -1;
-                if (a.date > b.date) return 1;
-
-
-                if (a.time < b.time) return -1;
-                if (a.time > b.time) return 1;
-
-                return 0;
+            // frågade chatgpt om hjälp med sortering av datum och tid
+            this.$root.bookings.sort((a, b) => {
+                const dateA = new Date(`${a.date}T${a.time}`);
+                const dateB = new Date(`${b.date}T${b.time}`);
+                return dateA - dateB;
             });
+           
+        },
+        sortByDateReverse() {
+            // frågade chatgpt om hjälp med sortering av datum och tid
+            this.$root.bookings.sort((a, b) => {
+                const dateA = new Date(`${a.date}T${a.time}`);
+                const dateB = new Date(`${b.date}T${b.time}`);
+                return dateB - dateA;
+            });
+            
         }
     },
 
@@ -155,6 +191,15 @@ const Servicesview = {
             <select v-model="servicetype">
                 <option v-for="type in servicetypes" :key="type" :value="type">{{ type }}</option>
             </select>
+
+            <label>Extra service:</label>
+            <select v-model="extraservice" >
+                <!-- Chatgpt för att lägga till placeholder i option element-->
+                <option value="" disabled selected hidden>Optional</option>
+                <option v-for="extra in extraservices" :key="extra" :value="extra">{{ extra }}</option>
+            </select>
+
+
             <button type="submit">Book Service</button>
         </form>
         <div>
@@ -163,7 +208,8 @@ const Servicesview = {
         </div>
         <div v-if="book">
         <h2>All Bookings</h2>
-        <button @click="sortByDate">Sort by Date</button>
+        <button  @click="sortByDate">Sort by Date</button>
+        <button  @click="sortByDateReverse">Reversed Date</button>
         <ul>
             <li v-for="booking in allbookings" :key="booking.id">
                 {{ booking.name }} - {{ booking.date }} at {{ booking.time }}
@@ -173,7 +219,7 @@ const Servicesview = {
         <button @click="toggleShowAllBookings">Hide All Bookings</button>
         </div>
         <div v-if="showtimes">
-        <h2 v-if="!date">Select Date</h2>
+        <h2 class="warningtext" v-if="!date">Please Select Date</h2>
         <h2 v-if="date">Available Times on {{ date }}</h2>
         <ul v-if="date">
             <li v-for="time in freetimes" :key="time">{{ time }}</li>
@@ -196,6 +242,11 @@ const Bookingsview = {
                 'Brake Service',
                 'Full Service'
             ],
+            extraservices: [
+                'Car Wash',
+                'Interior Cleaning',
+                'New Tires',
+            ],
         };
     },
     computed: {
@@ -212,6 +263,13 @@ const Bookingsview = {
         alteredbooking() {
             this.isediting = false;
             alert(`Your booking has been altered.`);
+        },
+        deletebooking() {
+            const index = this.$root.bookings.findIndex(booking => booking.id === this.bookings.id);
+            this.$root.bookings.splice(index, 1);
+            alert(`Booking deleted.`);
+            this.$router.push('/Services');
+
         }
     },
     template: `
@@ -226,6 +284,7 @@ const Bookingsview = {
             <p>Date: {{ bookings.date }}</p>
             <p>Time: {{ bookings.time }}</p>
             <p>Service Type: {{ bookings.servicetype }}</p>
+            <p v-if="bookings.extraservice">Extra: {{ bookings.extraservice }}</p>
             <p>Status: {{ bookings.status }}</p>
             <p v-if="bookings.comment">Comment: {{ bookings.comment }}</p>
             <button @click="alterbooking">Alter Booking</button>
@@ -255,6 +314,11 @@ const Bookingsview = {
                 <option v-for="type in servicetypes" :key="type" :value="type">{{ type }}</option>
             </select>
             
+            <label>Extra service:</label>
+            <select v-model="bookings.extraservice">
+                <option  v-for="extra in extraservices" :key="extra" :value="extra">{{ extra }}</option>
+            </select>
+
             <input type="radio" v-model="bookings.status" value="Done">
             <label for="done">Done</label>
 
@@ -266,7 +330,9 @@ const Bookingsview = {
 
             <label>Comment</label>
             <input v-model="bookings.comment" type="comment">
+            
             <button type="submit" class="btn">Save Changes</button>
+            <button type="button" @click="deletebooking">Delete booking</button>
         </form>
         </div>
     </div>

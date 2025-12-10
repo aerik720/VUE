@@ -10,7 +10,8 @@
       "time": "10:00",
       "servicetype": "Tire Change",
       "status": "Done",
-      "comment": ""
+      "comment": "Change to winter tires",
+      "extraservice": ""
     },
     {
       "id": 2,
@@ -22,7 +23,9 @@
       "time": "10:00",
       "servicetype": "Full Service",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
+      
     },
     {
       "id": 3,
@@ -34,7 +37,8 @@
       "time": "11:00",
       "servicetype": "Full Service",
       "status": "Upcoming",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 4,
@@ -46,7 +50,8 @@
       "time": "10:00",
       "servicetype": "Oil Change",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 5,
@@ -58,7 +63,8 @@
       "time": "11:00",
       "servicetype": "Full Service",
       "status": "Upcoming",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 6,
@@ -70,7 +76,8 @@
       "time": "13:00",
       "servicetype": "Full Service",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 7,
@@ -82,7 +89,8 @@
       "time": "10:00",
       "servicetype": "Brake Service",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 8,
@@ -94,7 +102,8 @@
       "time": "15:00",
       "servicetype": "Tire Change",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 9,
@@ -106,7 +115,8 @@
       "time": "15:00",
       "servicetype": "Tire Change",
       "status": "Upcoming",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 10,
@@ -118,7 +128,8 @@
       "time": "09:00",
       "servicetype": "Oil Change",
       "status": "Ongoing",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 11,
@@ -130,7 +141,8 @@
       "time": "13:00",
       "servicetype": "Full Service",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 12,
@@ -142,7 +154,8 @@
       "time": "15:00",
       "servicetype": "Oil Change",
       "status": "Ongoing",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 13,
@@ -154,7 +167,8 @@
       "time": "15:00",
       "servicetype": "Full Service",
       "status": "Ongoing",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 14,
@@ -166,7 +180,8 @@
       "time": "11:00",
       "servicetype": "Full Service",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 15,
@@ -178,7 +193,8 @@
       "time": "09:00",
       "servicetype": "Tire Change",
       "status": "Ongoing",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 16,
@@ -190,7 +206,8 @@
       "time": "14:00",
       "servicetype": "Oil Change",
       "status": "Ongoing",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 17,
@@ -202,7 +219,8 @@
       "time": "11:00",
       "servicetype": "Tire Change",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 18,
@@ -214,7 +232,8 @@
       "time": "13:00",
       "servicetype": "Tire Change",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 19,
@@ -226,7 +245,8 @@
       "time": "14:00",
       "servicetype": "Oil Change",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     },
     {
       "id": 20,
@@ -238,7 +258,8 @@
       "time": "14:00",
       "servicetype": "Brake Service",
       "status": "Done",
-      "comment": ""
+      "comment": "",
+      "extraservice": "Car Wash"
     }
   ]
 }

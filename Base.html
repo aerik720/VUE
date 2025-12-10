@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antons Auto</title>
+    <title>Limton's Auto</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vue-router@4"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="app">
-        <header>
+        <header class="nav-header">
             <div>
                 <router-link to="/">Home</router-link>
                 <router-link to="/services">Book Service</router-link>
@@ -18,11 +18,15 @@
                 <router-link to="/about">About Us</router-link>
             </div>
         </header>
-        <div id="content">
+        <div>
             <router-view></router-view>
         </div>
     </div>
+    <footer class="footer">
+        <p>© 2024 Limton's Auto. All rights reserved.</p>
+    </footer>
     <script src="app.js">
     </script>
+
 </body>
 </html>
