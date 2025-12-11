@@ -8,27 +8,37 @@ body {
 .nav-header {
     background-color: #1c1c1d;
     color: white;
-    padding: 1em 0;
+    padding-top:2rem;
+    padding-bottom:2rem;
     text-align: center;
+    font-size: 1.5rem;
 }
 
 header a {
     color: white;
-    margin: 0 15px;
+    margin: 0 1rem;
     text-decoration: none;
 }
+    
 
-.card {
-    background-color: white;
-    padding: 20px;
-    margin: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
 
 .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
     text-align: center;
-    padding: 10px;
+    margin-top: 5rem;
+    
+}
+
+.containerBook{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10rem;
 }
 
 details {
@@ -38,11 +48,12 @@ details {
     padding: 1rem;
     margin: 1rem;
     border-style: solid;
-    border-color: rgba(0, 15, 63, 0.932);
+    border-color: #043510;
     border-width: 2px;
     border-radius: 1rem;
-    background:rgba(12, 68, 94, 0.411);
+    background: #373837;
     box-shadow: 1rem;
+    color: white;
 }
 
 summary {
@@ -51,8 +62,9 @@ summary {
 
 summary h1 {
     display: inline;
+    text-align: left;
     margin-left: 1rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 details p {
@@ -60,11 +72,6 @@ details p {
     opacity: 0.7;
 }
 
-.ct{
-    display: flex;
-    justify-self: center;
-    font-size: 2.5rem;
-}
 
 .warningtext {
     color: red;
@@ -74,6 +81,11 @@ details p {
 .img{
     width: 100vw;
     height: 40vh;
+    object-fit: cover;
+}
+.img2{
+    width: 100vw;
+    height: 15vh;
     object-fit: cover;
 }
 .welcometext2{
@@ -99,9 +111,22 @@ details p {
     color: white;
     font-size: 3rem;
     text-shadow: 2px 2px 4px #000000;
-    padding: 1rem;
+    
 
 }
+.serviceText{
+    position: absolute;
+    text-align: center;
+    top: 10%;
+    left: 5%;
+    right:5%;
+    color: white;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px #000000;
+    
+} 
+
+
 .homeContainer{
     position: relative;
     text-align: center;
@@ -111,6 +136,7 @@ details p {
     font-size: 1.5rem;
     background-color: #076920;
     color: white;
+    border: #000000 1px solid;
     border-radius: 0.5rem;
     box-shadow: #000000 2px 2px 4px;
     width: 20rem;
@@ -131,4 +157,154 @@ details p {
    
 
    
+}
+.footer{
+    background-color: #1c1c1d;
+    color: white;
+    text-align: center;
+    padding-bottom: 1rem;
+    padding-top:1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    margin-top: 10rem;
+}
+
+.title{
+    text-align: center;
+    color:white;
+    margin-top: 2rem;
+    font-size: 2rem;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.form label{
+    margin-top: 1rem;
+    font-size: 1rem;
+    color:white;
+}
+
+.form input{
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color:white;
+    background-color: #076920;
+    width: 25rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    
+}
+
+.form ::placeholder{
+    color: white;
+    opacity: 0.7;
+}
+
+.form button{
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    background-color: #076920;
+    color: white;
+    border: #000000 1px solid;
+    border-radius: 0.5rem;
+    box-shadow: #000000 2px 2px 4px;
+    width: 15rem;
+    height: 3rem;
+    
+}
+
+.form button:hover{
+    background-color: #043510;
+    cursor: pointer;
+}
+
+.form select{
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color:white;
+    background-color: #076920;
+    width: 25rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    
+}
+
+
+.btnCard2{
+    display: flex;
+    justify-content: center;
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+   
+}
+
+.btnBook{
+    font-size: 1.5rem;
+    background-color: #076920;
+    color: white;
+    border: #000000 1px solid;
+    border-radius: 0.5rem;
+    box-shadow: #000000 2px 2px 4px;
+    width: 20rem;
+    height: 3rem;
+    margin: 1rem;
+    
+}
+.btnBook:hover{
+    background-color: #043510;
+    cursor: pointer;
+}
+
+
+.ul{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    list-style-type: none;
+    padding: 1rem;
+    color: white;
+    font-size: 1.5rem;
+    width : 50rem;
+    border: #043510 2px solid;
+    border-radius: 1rem;
+    background-color: #373837;
+}
+.ul li{
+    margin: 0.5rem 0;
+}
+
+.routerlink{
+    text-decoration: underline;
+    color:#097424;
+}
+
+.routerlink:hover{
+    text-decoration: none;
+    cursor: pointer;
+    color:#043510
+}
+
+.card {
+    background-color:#373837;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    width: 50rem;
+    border: #043510 2px solid;
+    border-radius: 1rem;
+
+}
+.card p b{
+    color :#097424;
 }

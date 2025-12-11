@@ -164,35 +164,40 @@ const Servicesview = {
 
     template: `
     <div>
-        <h2>Book a Service</h2>
-        <form @submit.prevent="bookService">
-            <label>Name:</label>
-            <input v-model="name">
+        <div>
+        <h2 class="title serviceText">Book a Service</h2>
+        <img class="img2" src="https://images.pexels.com/photos/12185933/pexels-photo-12185933.jpeg" alt="Car Service">
+        </div>
+        <form class="form" @submit.prevent="bookService">
+            <label>Please Enter Name:</label>
+            <input placeholder="Example Examplesson" v-model="name">
 
-            <label>Email:</label>
-            <input v-model="email">
+            <label>Please Enter Email:</label>
+            <input placeholder="Example@Examplemail.com" v-model="email">
 
-            <label>Phone:</label>
-            <input v-model="phone">
+            <label>Please Enter Phonenumber:</label>
+            <input placeholder="Example: 0701234567" v-model="phone">
 
-            <label>Regnr:</label>
-            <input v-model="regnr">
+            <label>Please Enter Registrationnumber:</label>
+            <input placeholder="Example: EXX123" v-model="regnr">
 
-            <label>Date:</label>
-            <input v-model="date" type="date">
+            <label>Please Select Date:</label>
+            <input  v-model="date" type="date">
 
             <label v-if="date">Time:</label>
             <select v-if="date" v-model="time">
             <!-- https://www.w3schools.com/tags/tag_option.asp -->
+                        
                 <option v-for="time in freetimes" :key="time" :value="time">{{ time }}</option>
             </select>
 
-            <label>Service Type:</label>
+            <label>Please Select Service Type:</label>
             <select v-model="servicetype">
+                <option value="" disabled selected hidden>Please select Service</option>
                 <option v-for="type in servicetypes" :key="type" :value="type">{{ type }}</option>
             </select>
 
-            <label>Extra service:</label>
+            <label>Please Select Extra service:</label>
             <select v-model="extraservice" >
                 <!-- Chatgpt för att lägga till placeholder i option element-->
                 <option value="" disabled selected hidden>Optional</option>
@@ -202,29 +207,29 @@ const Servicesview = {
 
             <button type="submit">Book Service</button>
         </form>
-        <div>
-        <button @click="showallbookings">Show All Bookings</button>
-        <button @click="toggletimes">Show Available Times</button>
+        <div class="btnCard2">
+        <button class="btnBook" @click="showallbookings">Show All Bookings</button>
+        <button class="btnBook" @click="toggletimes">Show Available Times</button>
         </div>
-        <div v-if="book">
-        <h2>All Bookings</h2>
-        <button  @click="sortByDate">Sort by Date</button>
-        <button  @click="sortByDateReverse">Reversed Date</button>
-        <ul>
+        <div class="containerBook"v-if="book">
+        <h2 class="title">All Bookings</h2>
+        <button class="btnBook" @click="sortByDate">Sort by Date</button>
+        <button class="btnBook" @click="sortByDateReverse">Reversed Date</button>
+        <ul class="ul">
             <li v-for="booking in allbookings" :key="booking.id">
                 {{ booking.name }} - {{ booking.date }} at {{ booking.time }}
-                <router-link :to="'/bookings/' + booking.id">More Info</router-link>
+                <router-link class="routerlink" :to="'/bookings/' + booking.id">More Info</router-link>
             </li>
         </ul>
-        <button @click="toggleShowAllBookings">Hide All Bookings</button>
+        <button class="btnBook" @click="toggleShowAllBookings">Hide All Bookings</button>
         </div>
-        <div v-if="showtimes">
+        <div class="containerBook" v-if="showtimes">
         <h2 class="warningtext" v-if="!date">Please Select Date</h2>
-        <h2 v-if="date">Available Times on {{ date }}</h2>
-        <ul v-if="date">
+        <h2 class="title" v-if="date">Available Times on {{ date }}</h2>
+        <ul class="ul" v-if="date">
             <li v-for="time in freetimes" :key="time">{{ time }}</li>
         </ul>
-        <button @click="untoggletimes">Hide Available Times</button>
+        <button class="btnBook" @click="untoggletimes">Hide Available Times</button>
         </div>
     </div>
     
@@ -274,24 +279,27 @@ const Bookingsview = {
     },
     template: `
     <div>
-    <h2>Booking info</h2>
-    <div v-if="bookings" class="card">
-        <div class="container">
+    <div>
+    <h2 class="serviceText">Booking info</h2>
+    <img class="img2" src="https://images.pexels.com/photos/12185933/pexels-photo-12185933.jpeg" alt="Car Service">
+    </div>
+    <div v-if="bookings" class="container">
+        <div class="card">
             <h4><b>{{ bookings.name }}</b></h4> 
-            <p>Email: {{ bookings.email }}</p>
-            <p>Phone: {{ bookings.phone }}</p>
-            <p>Regnr: {{ bookings.regnr }}</p>
-            <p>Date: {{ bookings.date }}</p>
-            <p>Time: {{ bookings.time }}</p>
-            <p>Service Type: {{ bookings.servicetype }}</p>
-            <p v-if="bookings.extraservice">Extra: {{ bookings.extraservice }}</p>
-            <p>Status: {{ bookings.status }}</p>
-            <p v-if="bookings.comment">Comment: {{ bookings.comment }}</p>
-            <button @click="alterbooking">Alter Booking</button>
+            <p><b>Email:</b> {{ bookings.email }}</p>
+            <p><b>Phone:</b> {{ bookings.phone }}</p>
+            <p><b>Regnr:</b> {{ bookings.regnr }}</p>
+            <p><b>Date:</b> {{ bookings.date }}</p>
+            <p><b>Time:</b> {{ bookings.time }}</p>
+            <p><b>Service Type:</b> {{ bookings.servicetype }}</p>
+            <p v-if="bookings.extraservice"><b>Extra:</b> {{ bookings.extraservice }}</p>
+            <p><b>Status:</b> {{ bookings.status }}</p>
+            <p v-if="bookings.comment"><b>Comment:</b> {{ bookings.comment }}</p>
+            <button class="btnBook" @click="alterbooking">Alter Booking</button>
         </div>
         <div v-if="isediting">
-        <h3>Alter Booking</h3>
-        <form @submit.prevent="alteredbooking">
+        <h3 class="title" >Alter Booking</h3>
+        <form class="form" @submit.prevent="alteredbooking">
             <label>Email:</label>
             <input v-model="bookings.email" type="email">
 
@@ -318,21 +326,23 @@ const Bookingsview = {
             <select v-model="bookings.extraservice">
                 <option  v-for="extra in extraservices" :key="extra" :value="extra">{{ extra }}</option>
             </select>
-
-            <input type="radio" v-model="bookings.status" value="Done">
+            
             <label for="done">Done</label>
-
-            <input type="radio" v-model="bookings.status" value="Upcoming">
+            <input type="radio" v-model="bookings.status" value="Done">
+            
             <label for="upcoming">Upcoming</label>
-
-            <input type="radio" v-model="bookings.status" value="Ongoing">
+            <input type="radio" v-model="bookings.status" value="Upcoming">
+            
             <label for="ongoing">Ongoing</label>
-
-            <label>Comment</label>
+            <input type="radio" v-model="bookings.status" value="Ongoing">
+            
+            <label>Comment:</label>
             <input v-model="bookings.comment" type="comment">
             
-            <button type="submit" class="btn">Save Changes</button>
-            <button type="button" @click="deletebooking">Delete booking</button>
+            <div class="btnCard2">
+            <button class="btnBook" type="submit" class="btn">Save Changes</button>
+            <button class="btnBook" type="button" @click="deletebooking">Delete booking</button>
+            </div>
         </form>
         </div>
     </div>
@@ -343,50 +353,67 @@ const Bookingsview = {
 const Aboutview = {
     // https://www.youtube.com/watch?v=kjw44XKL7xI
     template: `
-    <h2 class="ct">Our Services</h2>
+    <div>
+    <h2 class="serviceText">Our Services</h2>
+    <img class="img2" src="https://images.pexels.com/photos/12185933/pexels-photo-12185933.jpeg" alt="Car Service">
+    </div>
+    <div class="container containerBook">
     <details>
         <summary>
-        <h1>Item 1</h1>
+        <h1>Oil Change</h1>
         </summary>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
+        <p>We drain old engine oil, replace the oil filter, and refill with fresh oil to keep your engine running smoothly and efficiently.</p>
+        
     </details>
 
     <details>
         <summary>
-        <h1>Item 1</h1>
+        <h1>Tire Change</h1>
         </summary>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
+        <p>We change your tires for you so you don't have to.</p>
+    
     </details>
 
     <details>
         <summary>
-        <h1>Item 1</h1>
+        <h1>Brake Service</h1>
         </summary>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
+        <p>We inspect brake pads, rotors, and components, then repair or replace parts as needed to restore safe, responsive braking.</p>
+        
     </details>
 
     <details>
         <summary>
-        <h1>Item 1</h1>
+        <h1>Full Service</h1>
         </summary>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
-        <p>Description</p>
+        <p>A complete vehicle checkup including fluid top-ups, filter replacements, tire inspection, and overall system evaluation to ensure peak performance and reliability.</p>
+        
     </details>
+
+    <details>
+        <summary>
+        <h1>Car Wash</h1>
+        </summary>
+        <p>Exterior wash, rinse, and dry to remove dirt and grime, leaving your vehicle looking clean and polished.</p>
+        
+    </details>
+
+    <details>
+        <summary>
+        <h1>Interior Cleaning</h1>
+        </summary>
+        <p>Thorough vacuuming, wipe-down, and detailing of all interior surfaces to leave your car fresh, clean, and comfortable.</p>
+        
+    </details>
+
+    <details>
+        <summary>
+        <h1>New Tires</h1>
+        </summary>
+        <p>We can offer you brand new tires and install them for you.</p>
+        
+    </details>
+    </div>
 
     `
 };
@@ -433,17 +460,20 @@ const Bookingview = {
     },
     template: `
     <div>
-    <h2>Bookings</h2>
-    <form @submit.prevent="searchbooking">
+    <div>
+    <h2 class="serviceText">Bookings</h2>
+    <img class="img2" src="https://images.pexels.com/photos/12185933/pexels-photo-12185933.jpeg" alt="Car Service">
+    </div>
+    <form class="form" @submit.prevent="searchbooking">
     <label>Search Booking:</label>
     <input type="text" v-model="searchtext" placeholder="Enter Regnr, Name or Email">
     <button type="submit">Search</button>
     <button type="button" @click="stopsearchbooking">Clear</button>
-    <ul v-if="searching == true">
+    <ul class="ul" v-if="searching == true">
     
         <li v-for="booking in filteredbookings" :key="booking.id">
             {{ booking.name }} - {{ booking.regnr }} - {{ booking.date }} at {{ booking.time }} - {{ booking.status }}
-            <router-link :to="'/bookings/' + booking.id">More Info</router-link>
+            <router-link class="routerlink" :to="'/bookings/' + booking.id">More Info</router-link>
             
         </li>
         
