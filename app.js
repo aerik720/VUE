@@ -1,5 +1,6 @@
 // Vy för startsidan
 const Homeview = {
+    // Html template för hemsidan
     template: `
     <div>
         
@@ -299,14 +300,17 @@ const Bookingsview = {
 
         }
     },
+    
     template: `
     <div>
     <div>
     <h2 class="serviceText">Booking info</h2>
     <img class="img2" src="https://images.pexels.com/photos/12185933/pexels-photo-12185933.jpeg" alt="Car Service">
     </div>
+    <!-- Om bokning finns visa den -->
     <div v-if="bookings" class="container">
         <div class="card">
+        <!-- <b> för att få css styling -->
             <h4><b>{{ bookings.name }}</b></h4> 
             <p><b>Email:</b> {{ bookings.email }}</p>
             <p><b>Phone:</b> {{ bookings.phone }}</p>
@@ -314,11 +318,13 @@ const Bookingsview = {
             <p><b>Date:</b> {{ bookings.date }}</p>
             <p><b>Time:</b> {{ bookings.time }}</p>
             <p><b>Service Type:</b> {{ bookings.servicetype }}</p>
+            <!-- Om extraservice eller kommentar finns visa den -->
             <p v-if="bookings.extraservice"><b>Extra:</b> {{ bookings.extraservice }}</p>
             <p><b>Status:</b> {{ bookings.status }}</p>
             <p v-if="bookings.comment"><b>Comment:</b> {{ bookings.comment }}</p>
             <button class="btnBook" @click="alterbooking">Alter Booking</button>
         </div>
+        <!-- Om isediting är true visa alterbooking formuläret -->
         <div v-if="isediting">
         <h3 class="title" >Alter Booking</h3>
         <form class="form" @submit.prevent="alteredbooking">
@@ -349,6 +355,7 @@ const Bookingsview = {
                 <option  v-for="extra in extraservices" :key="extra" :value="extra">{{ extra }}</option>
             </select>
             
+            <!-- Radioknappar så att man kan ändra statusen på bokningen -->
             <label for="done">Done</label>
             <input type="radio" v-model="bookings.status" value="Done">
             
@@ -363,6 +370,7 @@ const Bookingsview = {
             
             <div class="btnCard2">
             <button class="btnBook" type="submit" class="btn">Save Changes</button>
+            <!-- Knapp för att ta bort en bokning -->
             <button class="btnBook" type="button" @click="deletebooking">Delete booking</button>
             </div>
         </form>
@@ -372,6 +380,7 @@ const Bookingsview = {
     `
 };
 
+// Vy för om oss sidan
 const Aboutview = {
     // https://www.youtube.com/watch?v=kjw44XKL7xI
     template: `
@@ -380,7 +389,9 @@ const Aboutview = {
     <img class="img2" src="https://images.pexels.com/photos/12185933/pexels-photo-12185933.jpeg" alt="Car Service">
     </div>
     <div class="container containerBook">
+    <!-- Html för att bygga upp en accordion -->
     <details>
+    <!-- Titel och beskrivning av varje service -->
         <summary>
         <h1>Oil Change</h1>
         </summary>
@@ -440,43 +451,57 @@ const Aboutview = {
     `
 };
 
+// Vy för att kunna söka bland alla befintliga bokningar
 const Bookingview = {
+    // Data för att kunna söka
     data() {
         return {
+            // Gör textfältet tomt från början
             searchtext: '',
+            // Sätt searching till false från start
             searching: false
         };
     },
+    // Metoder för sökfunktion
     methods: {
+        // Searching sätts till true när man trycker search
         searchbooking() {
             this.searching = true;
         },
 
+        // Funktion för clear knappen, sätter searching till false och tömmer sökfältet
         stopsearchbooking() {
             this.searching = false;
             this.searchtext = '';
         }
     },
-
+    // Beräkningar för att kunna söka på olika nyckelord i bokningarna
     computed: {
         filteredbookings() {
+            // Om ingen text anges skicka tillbaka en tom lista
             if (!this.searchtext) {
                 return [];
             }
+            // Gör inputtexten till små bokstäver
             let text = this.searchtext.toLowerCase();
+            // Ny array för resultat
             let results = [];
 
+            // Gör om alla namn, regnr, email, och status till små bokstäver i alla bokningar
             this.$root.bookings.forEach(booking => {
                 let name = booking.name.toLowerCase();
                 let regnr = booking.regnr.toLowerCase();
                 let email = booking.email.toLowerCase();
                 let status = booking.status.toLowerCase();
 
+                // Jämför om användarinputen finns i någon av bokninarnas namn, regnr, email, eller status 
                 if (name.includes(text) || regnr.includes(text) || status.includes(text) || email.includes(text)) {
+                    // Lägg till alla matchningar i results
                     results.push(booking);
                 }
             });
 
+            // Skicka tillbaka resultatet
             return results;
         }
     },
@@ -491,6 +516,7 @@ const Bookingview = {
     <input type="text" v-model="searchtext" placeholder="Enter Regnr, Name or Email">
     <button type="submit">Search</button>
     <button type="button" @click="stopsearchbooking">Clear</button>
+    <!-- Om searching är true, visa bokningarna som matchar sökningen -->
     <ul class="ul" v-if="searching == true">
     
         <li v-for="booking in filteredbookings" :key="booking.id">
@@ -504,6 +530,7 @@ const Bookingview = {
     </div>
 `
 }
+// Här är alla routes för hemsidan som kopplar ihop path med komponent
 const routes = [
     { path: '/', component: Homeview },
     { path: '/services', component: Servicesview },
@@ -512,30 +539,38 @@ const routes = [
     { path: '/about', component: Aboutview },
 ];
 
-
+// Skapa routern
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),
     routes,
 });
 
+// Skapar Vue appen
 const app = Vue.createApp({
+    // Data som ligger i root
     data() {
         return {
+            // Våran array som innehåller alla bokningar 
             bookings: []
         }
     },
+    // När appen skapas, körs funktionen som laddar in alla bokningar från JSON filen
     created() {
         this.loadBookings();
     },
     methods: {
+        // Fetchar JSON data
         async loadBookings() {
             try {
                 const response = await fetch('bookings.json')
+                // Om fetchen inte lyckas skapa ett error
                 if (!response.ok) {
                     throw new Error(`Kunde inte hämta bokningar`);
                 }
+                //Hämta JSON data och lägg in det i arrayen
                 const data = await response.json();
                 this.bookings = data.bookingdata;
+                // Fångar upp fel och meddelar i konsolen
             } catch (error) {
                 console.error('Fel vid hämtning av bokningar:', error);
             }
@@ -543,5 +578,6 @@ const app = Vue.createApp({
     }
 });
 
+// Appen använder routern och "mountas" in i base.html filen
 app.use(router);
 app.mount('#app');
