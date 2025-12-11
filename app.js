@@ -1,3 +1,4 @@
+// Vy för startsidan
 const Homeview = {
     template: `
     <div>
@@ -9,25 +10,21 @@ const Homeview = {
         </div>
 
         <div class="btnCard">
-        
+        <!-- Knapp i router link för att ta sig till bokningssidan -->
         <router-link to="/services">
             <button class="btnHome">Book a Service</button>
         </router-link>
-        
-        
-        
-        
         <router-link to="/bookings">
-
             <button class="btnHome">View Bookings</button>
         </router-link>
         </div>
-        
     </div>
     `
 }
 
+// Vy för bokningssidan
 const Servicesview = {
+    // här är all data vi behöver för att boka en service
     data() {
         return {
             // ID fick vi hjälp av chatgpt hur vi skulle göra
@@ -39,6 +36,7 @@ const Servicesview = {
             date: '',
             time: '',
             servicetype: '',
+            // olika servicetyper
             servicetypes: [
                 'Oil Change',
                 'Tire Change',
@@ -51,31 +49,35 @@ const Servicesview = {
                 'Interior Cleaning',
                 'New Tires',
             ],
+            // möjliga tider
             alltimes: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"],
+            // sätter book och showtimes till false direkt så att alla bokningar och lediga tider inte visas från start
             book: false,
             showtimes: false,
             
         };
     },
-
+    // här är alla beräknade värden vi behöver för att hantera bokningar och tider
     computed: {
+        // hämtar alla bokningar från root
         allbookings() {
             //https://www.w3schools.com/vue/ref_objRoot.php
             return this.$root.bookings;
         },
-
+        // filtrerar bokningar för valt datum
         bookingsfordate() {
             let results = [];
-
+            // går igenom alla bokningar och kollar om datumet matchar valt datum
             this.allbookings.forEach(booking => {
                 if (booking.date === this.date) {
+                    // om det matchar, lägg till i results listan
                     results.push(booking);
                 }
             });
 
             return results;
         },
-
+        // hämtar alla bokade tider
         bookedtimes() {
             let times = [];
 
@@ -85,7 +87,7 @@ const Servicesview = {
 
             return times;
         },
-
+        // räknar ut lediga tider
         freetimes() {
             let free = [];
 
@@ -98,7 +100,9 @@ const Servicesview = {
             return free;
         },
     },
+    // här är alla metoder vi behöver för att hantera bokningar och visningar
     methods: {
+        // metod för att boka en ny service
         bookService() {
             const newBooking = {
                 id: Date.now(),
@@ -112,10 +116,10 @@ const Servicesview = {
                 extraservice: this.extraservice,
                 status: "Upcoming"
             };
-
+            // lägger till den nya bokningen i root's bookings array och meddelar användaren
             this.$root.bookings.push(newBooking);
             alert(`Thank you, ${this.name}! We look forward to servicing your car.`);
-
+            // tömmer fälten efter gjord bokning
             this.name = '';
             this.email = '';
             this.phone = '';
@@ -125,23 +129,23 @@ const Servicesview = {
             this.servicetype = '';
             this.extraservice = '';
         },
-
+        // när man trycker på knappen så blir book true och alla bokningar visas
         showallbookings() {
             this.book = true;
         },
-
+        // knappen för att dölja alla bokningar
         toggleShowAllBookings() {
             this.book = false;
         },
-
+        // knappen för att visa lediga tider
         toggletimes() {
             this.showtimes = true;
         },
-
+        // knappen för att dölja lediga tider
         untoggletimes() {
             this.showtimes = false;
         },
-
+        // sorterar bokningar efter datum och tid i stigande ordning
         sortByDate() {
             // frågade chatgpt om hjälp med sortering av datum och tid
             this.$root.bookings.sort((a, b) => {
@@ -151,6 +155,7 @@ const Servicesview = {
             });
            
         },
+        // sorterar bokningar efter datum och tid i fallande ordning
         sortByDateReverse() {
             // frågade chatgpt om hjälp med sortering av datum och tid
             this.$root.bookings.sort((a, b) => {
@@ -168,6 +173,7 @@ const Servicesview = {
         <h2 class="title serviceText">Book a Service</h2>
         <img class="img2" src="https://images.pexels.com/photos/12185933/pexels-photo-12185933.jpeg" alt="Car Service">
         </div>
+        <!-- Formulär för att göra bokning, @submit.prevent för att inte skicka datan förens man tryckt på submit -->
         <form class="form" @submit.prevent="bookService">
             <label>Please Enter Name:</label>
             <input placeholder="Example Examplesson" v-model="name">
@@ -184,6 +190,7 @@ const Servicesview = {
             <label>Please Select Date:</label>
             <input  v-model="date" type="date">
 
+            <!-- V-if gör så att om ett datum är valt så visas lediga tider på det datumet -->
             <label v-if="date">Time:</label>
             <select v-if="date" v-model="time">
             <!-- https://www.w3schools.com/tags/tag_option.asp -->
@@ -193,36 +200,42 @@ const Servicesview = {
 
             <label>Please Select Service Type:</label>
             <select v-model="servicetype">
+                <!-- Tog hjälp av Chatgpt för att lägga till placeholder i option element-->
                 <option value="" disabled selected hidden>Please select Service</option>
                 <option v-for="type in servicetypes" :key="type" :value="type">{{ type }}</option>
             </select>
 
             <label>Please Select Extra service:</label>
             <select v-model="extraservice" >
-                <!-- Chatgpt för att lägga till placeholder i option element-->
                 <option value="" disabled selected hidden>Optional</option>
                 <option v-for="extra in extraservices" :key="extra" :value="extra">{{ extra }}</option>
             </select>
 
-
+            <!-- knapp med submit för att skicka datan -->
             <button type="submit">Book Service</button>
         </form>
+
+        <!-- sektion för att visa alla bokningar och lediga tider -->
         <div class="btnCard2">
+        <!-- knappar som sätter book och freetimes till true -->
         <button class="btnBook" @click="showallbookings">Show All Bookings</button>
         <button class="btnBook" @click="toggletimes">Show Available Times</button>
         </div>
         <div class="containerBook"v-if="book">
         <h2 class="title">All Bookings</h2>
+        <!-- knappar som sorterar datum i fallande eller stigande ordning -->
         <button class="btnBook" @click="sortByDate">Sort by Date</button>
         <button class="btnBook" @click="sortByDateReverse">Reversed Date</button>
         <ul class="ul">
             <li v-for="booking in allbookings" :key="booking.id">
                 {{ booking.name }} - {{ booking.date }} at {{ booking.time }}
+                 <!-- more info länk som skickar med bokningsid till nästa sida -->
                 <router-link class="routerlink" :to="'/bookings/' + booking.id">More Info</router-link>
             </li>
         </ul>
         <button class="btnBook" @click="toggleShowAllBookings">Hide All Bookings</button>
         </div>
+        <!-- V-if gör så att detta visas endast om showtimes är true -->
         <div class="containerBook" v-if="showtimes">
         <h2 class="warningtext" v-if="!date">Please Select Date</h2>
         <h2 class="title" v-if="date">Available Times on {{ date }}</h2>
@@ -236,7 +249,9 @@ const Servicesview = {
     `
 };
 
+// Vy för enskild bokning
 const Bookingsview = {
+    // all data vi behöver för att visa och ändra en bokning
     data() {
         return {
             alltimes: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"],
@@ -254,25 +269,32 @@ const Bookingsview = {
             ],
         };
     },
+    // beräknade värden
     computed: {
+        // hämtar bokningen baserat på id från routen
         bookings() {
+            // https://router.vuejs.org/guide/essentials/dynamic-matching.html
             const id = Number(this.$route.params.id);
             return this.$root.bookings.find(booking => booking.id === id);
         }
     },
-
+    // metoder för att ändra och ta bort bokningar
     methods: {
+        // sätter isediting till true för att visa form så man kan ändra
         alterbooking() {
             this.isediting = true;
         },
+        // sparar ändringarna och sätter isediting till false
         alteredbooking() {
             this.isediting = false;
             alert(`Your booking has been altered.`);
         },
+        // tar bort bokningen från root's bookings array
         deletebooking() {
             const index = this.$root.bookings.findIndex(booking => booking.id === this.bookings.id);
             this.$root.bookings.splice(index, 1);
             alert(`Booking deleted.`);
+            // efter borttagning, navigera tillbaka till services sidan med hjälp av .push
             this.$router.push('/Services');
 
         }
